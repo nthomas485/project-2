@@ -8,7 +8,7 @@ import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
  * @demo index.html
  * @element rpg-inputs
  */
-export class rpg-inputs extends DDDSuper(I18NMixin(LitElement)) {
+export class rpgInputs extends DDDSuper(I18NMixin(LitElement)) {
   constructor() {
     super();
     this.title = '';
@@ -176,4 +176,4 @@ export class rpg-inputs extends DDDSuper(I18NMixin(LitElement)) {
   }
 }
 
-globalThis.customElements.define(rpg-inputs.tag, rpg-inputs);
+globalThis.customElements.define(rpgInputs.tag, rpgInputs);
