@@ -3,12 +3,12 @@ import { DDDSuper } from "@haxtheweb/d-d-d/d-d-d.js";
 import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
 
 /**
- * `inputs`
+ * `rpg-inputs`
  * 
  * @demo index.html
- * @element inputs
+ * @element rpg-inputs
  */
-export class inputs extends DDDSuper(I18NMixin(LitElement)) {
+export class rpg-inputs extends DDDSuper(I18NMixin(LitElement)) {
   constructor() {
     super();
     this.title = '';
@@ -168,7 +168,7 @@ export class inputs extends DDDSuper(I18NMixin(LitElement)) {
         `;
   }
   static get tag() {
-    return "inputs";
+    return "rpg-inputs";
   }
   static get haxProperties() {
     return new URL(`./lib/${this.tag}.haxProperties.json`, import.meta.url)
@@ -176,4 +176,4 @@ export class inputs extends DDDSuper(I18NMixin(LitElement)) {
   }
 }
 
-globalThis.customElements.define(inputs.tag, inputs);
+globalThis.customElements.define(rpg-inputs.tag, rpg-inputs);
