@@ -7,6 +7,8 @@ import { DDDSuper } from "@haxtheweb/d-d-d/d-d-d.js";
 import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
 import "@haxtheweb/rpg-character/rpg-character.js";
 import { WiredButton, WiredInput } from "wired-elements"
+import { rpgInputs } from "./rpg-inputs.js";
+import "./rpg-inputs.js";
 
 export const hatArray = [
   "bunny",
@@ -49,7 +51,7 @@ export class Project2 extends DDDSuper(I18NMixin(LitElement)) {
 
   constructor() {
     super();
-    this.title = "";
+    /* this.title = "";
     this.accentColor = '';
     this.dark = '';
     this.accessories = '';
@@ -71,7 +73,26 @@ export class Project2 extends DDDSuper(I18NMixin(LitElement)) {
     this.circle = false;
     this.fire = false;
     this.demo = false;
-    this.reduceMotion = true;
+    this.reduceMotion = true; */
+
+    this.attributes = {
+      seed: "00000000",
+      base: 0, // 0 for no hair, 1 for hair
+      face: 0,
+      faceitem: 0,
+      hair: 0,
+      pants: 0,
+      shirt: 0,
+      skin: 0,
+      eyeColor: 0,
+      glasses: false,
+      hatColor: 0,
+      size: 200,
+      name: "",
+      fire: false,
+      walking: false,
+      circle: false,
+    };
   }
 
   // Lit reactive properties
@@ -100,6 +121,7 @@ export class Project2 extends DDDSuper(I18NMixin(LitElement)) {
       fire: { type: Boolean, Reflect: true },
       demo: { type: Boolean, Reflect: true },
       reduceMotion: { type: Boolean, Reflect: true },
+      attributes: { type: Object},
     };
   }
 
@@ -128,10 +150,62 @@ export class Project2 extends DDDSuper(I18NMixin(LitElement)) {
     return html`
 <div class="wrapper">
   <h3><span>${this.t.title}:</span> ${this.title}</h3>
-  <rpg-character ></rpg-character>
-  <wired-button> Click </wired-button>
+  <div class="display-name"> ${this.attributes.name}</div>
+  <rpg-character 
+      .base="${this.attributes.base}"
+      .face="${this.attributes.face}"
+      .faceitem="${this.attributes.faceitem}"
+      .hair="${this.attributes.hair}"
+      .pants="${this.attributes.pants}"
+      .shirt="${this.attributes.shirt}"
+      .skin="${this.attributes.skin}"
+      ?fire="${this.attributes.fire}"
+      ?walking="${this.attributes.walking}"
+      ?circle="${this.attributes.circle}"></rpg-character>
+  <div class="display-seed"> Seed: ${this.attributes.seed}</div>
+  <rpg-inputs
+      base="${this.attributes.base}"
+      face="${this.attributes.face}"
+      faceitem="${this.attributes.faceitem}"
+      hair="${this.attributes.hair}"
+      pants="${this.attributes.pants}"
+      shirt="${this.attributes.shirt}"
+      skin="${this.attributes.skin}"
+      size="${this.attributes.size}"
+  ></rpg-inputs>
+  <!-- <wired-button> Click </wired-button> -->
   <slot></slot>
 </div>`;
+  }
+
+  SeedMaker() {
+    const { base, face, faceitem, hair, pants, shirt, skin } = this.attributes;
+    this.attributes.seed = `${base}${face}${faceitem}${hair}${pants}${shirt}${skin}`;
+  }
+
+  updateResults(key, value) {
+    this.attributes = { ...this.attributes, [key]: value };
+    this.SeedMaker();
+    this.requestUpdate();
+  }
+
+  updateSettings() {
+    const seed = this.characterSettings.seed;
+    const paddedSeed = seed.padStart(8, "0").slice(0, 8);
+    const values = paddedSeed.split("").map((v) => parseInt(v, 10));
+  
+    [
+      this.attributes.base,
+      this.attributes.face,
+      this.attributes.faceitem,
+      this.attributes.hair,
+      this.attributes.pants,
+      this.attributes.shirt,
+      this.attributes.skin,
+      this.attributes.hatColor,
+    ] = values;
+  
+    this.requestUpdate(); // Ensure UI updates after applying settings
   }
 
   /**

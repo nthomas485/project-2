@@ -1,6 +1,8 @@
 import { LitElement, html, css } from "lit";
 import { DDDSuper } from "@haxtheweb/d-d-d/d-d-d.js";
 import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
+import "@haxtheweb/rpg-character/rpg-character.js";
+import { WiredButton, WiredInput } from "wired-elements"
 
 /**
  * `rpg-inputs`
@@ -105,68 +107,158 @@ export class rpgInputs extends DDDSuper(I18NMixin(LitElement)) {
       }
     }
     
+    
         `];
   }
 
   render() {
     return html`
-    <div class="wrapper" style="--site-hex-code: ${this.hex}">
-
-      <div class="logo" ?hidden="${this.logo === ''}">
-        ${this.logo ? html`<img src="${this.url}/${this.logo}" alt=''>` : ''}
+    <div class="inputs">
+      <div class="gender">
+        <wired-combo .value=${this.attributes.base} @select="${(e) => this.updateResults('base', e.target.value)}">
+          <wired-item value="1">Male</wired-item>
+          <wired-item value="5">Female</wired-item>
+        </wired-combo>
+      </div>
+      <div class="name">Name:
+        <wired-input
+        id='name'
+        type='text'
+        placeholder='Enter a name'
+        @input='${(e)=> this.updateResults('name', e.value)}'
+        ></wired-input>
       </div>
 
-      <div class="text"> 
-        <div class="title" ?hidden="${this.title === ''}">
-          ${this.title !== '' ? html`<a href="${this.title}" target="_blank"></a>` : " "} 
-            <span class="icon" ?hidden="${this.icon === ''}">
-              <simple-icon icon="${this.icon}"></simple-icon>
-            </span> 
-            ${this.title}
+      <div class="hair">Hair:
+      <wired-checkbox
+        id='hair'
+        ?checked='${this.attributes.base === 1}'
+        placeholder='Enter a name'
+        @change='${(e)=> this.updateResults('base', e.target.value ? 1 : 0)}'
+        >Hair</wired-checkbox>
+      </div>
+
+      <div class="charSize">
+        <wired-slider
+          id="size"
+          value="${this.attributes.size}"
+          min="100"
+          max="600"
+          @change="${(e) => this.updateResults('size', parseInt(e.detail.value))}"
+          ></wired-slider>
+      </div>
+
+      <div class="face">Face:
+      <wired-slider
+          id="face"
+          value="${this.attributes.face}"
+          min="0"
+          max="5"
+          @change="${(e) => this.updateResults('face', parseInt(e.detail.value))}"
+          ></wired-slider>
+      </div>
+
+      <div class="faceItem">Item:
+      <wired-slider
+         id="faceitem"
+          value="${this.attributes.faceitem}"
+          min="0"
+          max="9"
+          @change="${(e) => this.updateResults('faceitem', parseInt(e.detail.value))}"
+          ></wired-slider>
+      </div>
+
+      <div class="hairStyle">Hair Style:
+      <wired-slider
+          id="hair"
+          value="${this.attributes.hair}"
+          min="0"
+          max="9"
+          @change="${(e) => this.updateResults('hairstyle', parseInt(e.detail.value))}"
+          ></wired-slider>
+      </div>
+
+      <div class="pantStyle">Pants:
+      <wired-slider
+          id="pants"
+          value="${this.attributes.pants}"
+          min="0"
+          max="9"
+          @change="${(e) => this.updateResults('pants', parseInt(e.detail.value))}"
+          ></wired-slider>
+      </div>
+
+      <div class="shirtStyle">Shirt:
+      <wired-slider
+          id="shirt"
+          value="${this.attributes.shirt}"
+          min="0"
+          max="9"
+          @change="${(e) => this.updateResults('shirt', parseInt(e.detail.value))}"
+          ></wired-slider>
+      </div>
+
+      <div class="skin">Skin:
+      <wired-slider
+          id="skin"
+          value="${this.attributes.skin}"
+          min="0"
+          max="9"
+          @change="${(e) => this.updateResults('skin', parseInt(e.detail.value))}"
+          ></wired-slider>
+      </div>
+
+      <div class="hatColor">Hat Color:
+      <wired-slider
+          id="hatColor"
+          value="${this.attributes.hatColor}"
+          min="0"
+          max="9"
+          @change="${(e) => this.updateResults('hatColor', parseInt(e.detail.value))}"
+          ></wired-slider>
+      </div>
+
+      <div class="fire">
+        <wired-checkbox ?checked="${this.attributes.fire}" @change="${(e) => this.updateResults('fire', e.target.checked)}">Fire</wired-checkbox>
+      </div>
+
+      <div class="walking">
+        <wired-checkbox ?checked="${this.attributes.walking}" @change="${(e) => this.updateResults('walking', e.target.checked)}">Walking</wired-checkbox>
       </div>
     </div>
-
-    <div ?hidden="${this.theme === ''}">
-      <div class="info">
-        <span class="label">Theme</span>
-        <span>: ${this.theme}</span>
-      </div>
-    </div>
-
-    <div ?hidden="${this.description === ''}">
-      <div class="info">
-        <span class="label">Description</span>
-        <span>: ${this.description}</span>
-      </div>
-    </div>
-
-    <div ?hidden="${this.created === ''}">
-      <div class="info">
-        <span class="label">Created</span>
-        <span>: ${this.created}</span>
-      </div>
-    </div>
-
-    <div ?hidden="${this.lastUpdated === ''}">
-      <div class="info">
-        <span class="label">Updated</span>
-        <span>: ${this.lastUpdated}</span>
-      </div>
-    </div>
-
-          </div>
-        <!-- <div class="wrapper">
-         <img class="image" src="${this.url}/${this.logo}" alt="${this.title}"> 
-            <a href="${this.slug}" target="_blank">${this.title} </a>
-            <div id="update"> ${this.lastUpdated}</div> 
-            <div id="description">${this.description}</div>
-             <a id="slug" href="${this.slug}" target="_blank"> slug</a> 
-            <a id="source" href="${this.source}" target="_blank"> open source</a>
-            <div id="create"> ${this.created}</div>
-        </div> -->
     
         `;
   }
+
+  SeedMaker() {
+    const { base, face, faceitem, hair, pants, shirt, skin, hatColor} = this.attributes;
+    this.attributes.seed = `${base}${face}${faceitem}${hair}${pants}${shirt}${skin}${hatColor}`;
+  }
+
+  updateResults(key, value) {
+    this.attributes = { ...this.attributes, [key]: value };
+    this.SeedMaker();
+    this.requestUpdate();
+  }
+
+ /*  updateSettings() {
+    const seed = this.characterSettings.seed;
+    const paddedSeed = seed.padStart(8, "0").slice(0, 8);
+    const values = paddedSeed.split("").map((v) => parseInt(v, 10));
+  
+    [
+      this.attributes.base,
+      this.attributes.face,
+      this.attributes.faceitem,
+      this.attributes.hair,
+      this.attributes.pants,
+      this.attributes.shirt,
+      this.attributes.skin,
+      this.attributes.hatColor,
+    ] = values;
+  
+    this.requestUpdate(); // Ensure UI updates after applying settings
+  } */
   static get tag() {
     return "rpg-inputs";
   }
